@@ -20,6 +20,22 @@ class UserSeeder extends Seeder
             'description' => 'Sitenin genel yönetimini sağlar',
         ]);
 
+        
+            $roleBlog = Role::Create(
+            [
+                'name' =>'blog-yoneticisi',
+                'title' => 'Blog Yöneticisi,',
+                'description' => 'Blog yönetimini sağlar',
+            ]);
+
+            $roleECommerce = Role::Create(
+            [
+                'name' =>'e-ticaret-yoneticisi',
+                'title' => 'E-Ticaret Yöneticisi,',
+                'description' => 'E-Ticaret yönetimini sağlar',
+            ]);
+
+
         $user = User::create(
             [
             'name' => 'Hüseyin',
@@ -28,6 +44,11 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole($role);
 
-        User::factory(100)->create();
+      if(User::count() == 1){
+        $users = User::factory(100)->create();
+        foreach ($users as $user) {
+            $user->assignRole(rand(0, 1) == 1 ? $roleBlog : $roleECommerce);
+        }
+      }
     }
 }

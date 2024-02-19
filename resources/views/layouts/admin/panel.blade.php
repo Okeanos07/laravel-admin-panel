@@ -56,6 +56,7 @@
                 Interface
             </div>
 
+            @hasanyrole(['yonetici', 'e-ticaret-yoneticisi'])
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -71,9 +72,11 @@
                     </div>
                 </div>
             </li>
+            @endhasanyrole
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            @hasanyrole(['yonetici', 'blog-yoneticisi'])
+             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -90,7 +93,7 @@
                     </div>
                 </div>
             </li>
-
+            @endhasanyrole
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -127,13 +130,14 @@
                     <span>Charts</span></a>
             </li>
 
+            @hasanyrole(['yonetici'])
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="{{route('admin.users.index')}}">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Kullanıcılar</span></a>
             </li>
-
+            @endhasanyrole
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
