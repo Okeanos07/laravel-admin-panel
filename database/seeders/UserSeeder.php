@@ -1,10 +1,13 @@
 <?php
 
 namespace Database\Seeders;
+
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -18,22 +21,77 @@ class UserSeeder extends Seeder
             'name' =>'yonetici',
             'title' => 'Yönetici',
             'description' => 'Sitenin genel yönetimini sağlar',
-        ]);
-
+        ]);  
         
-            $roleBlog = Role::Create(
+            $roleBlog = Role::create(
             [
                 'name' =>'blog-yoneticisi',
                 'title' => 'Blog Yöneticisi,',
                 'description' => 'Blog yönetimini sağlar',
             ]);
 
-            $roleECommerce = Role::Create(
+
+
+            $roleECommerce = Role::create(
             [
                 'name' =>'e-ticaret-yoneticisi',
                 'title' => 'E-Ticaret Yöneticisi,',
                 'description' => 'E-Ticaret yönetimini sağlar',
             ]);
+
+            $permissions['blog-yoneticisi'] = [
+                [
+                    'title' => 'Yazıları Görüntüleyebilir',
+                    'description' => 'Tüm yazıları görüntüleyebilir',
+                ],
+                [
+                    'title' => 'Yazıları Düzenleyebilir',
+                    'description' => 'Tüm yazıları düzeneyebilir',
+                ],
+                [
+                    'title' => 'Yazı Kategorilerini Görüntüleyebilir',
+                    'description' => 'Tüm yazı kategorilerini görüntüleyebilir',
+                ],
+                [
+                    'title' => 'Yazı Kategorilerini Düzenleyebilir',
+                    'description' => 'Tüm yazı kategorilerini düzenleyebilir',
+                ],
+            ];
+
+            $permissions['e-ticaret-yoneticisi'] = [
+                [
+                    'title' => 'Siparişleri Görüntüleyebilir',
+                    'description' => 'Tüm siparişleri görüntüleyebilir',
+                ],
+                [
+                    'title' => 'Siparişleri Düzenleyebilir',
+                    'description' => 'Tüm siparişerli düzeneyebilir',
+                ],
+                [
+                    'title' => 'Ürünleri Görüntüleyebilir',
+                    'description' => 'Tüm Ürünleri görüntüleyebilir',
+                ],
+                [
+                    'title' => 'Ürünleri Düzenleyebilir',
+                    'description' => 'Tüm ürünleri düzenleyebilir',
+                ],
+            ];
+
+            foreach($permissions as $key => $permission) {
+                $role = Role::where('name', $key)->first();
+
+                foreach($permission as $p) {
+                    $newPermission = Permission::create(
+                        [
+                            'name' => Str::slug($p['title']),
+                            'title' => $p['title'],
+                            'description' => $p['description'],
+                        ]
+                    );
+
+                    $role->givePermissionTo($newPermission);
+                }
+            }
 
 
         $user = User::create(
